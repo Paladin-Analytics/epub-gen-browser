@@ -1,5 +1,5 @@
 {
-  "name": "epub-gen-memory",
+  "name": "@paladin-analytics/epub-gen-browser",
   "version": "1.0.10",
   "description": "A library to generate EPUB from HTML",
   "main": "dist/lib/index.js",
@@ -21,7 +21,8 @@
     "dev": "node scripts/templates.js -w & tsc -w & tsc-alias -w",
     "test": "node -r source-map-support/register --trace-uncaught --unhandled-rejections=strict scripts/runner.js",
     "clean": "rimraf dist lib/templates .tsbuildinfo",
-    "prepack": "npm run clean && npm run build && npm run bundle && echo tests > dist/.npmignore && echo bundle.js >> dist/.npmignore"
+    "prepack": "npm run clean && npm run build && npm run bundle && echo tests > dist/.npmignore && echo bundle.js >> dist/.npmignore",
+    "release": "standard-version && git push --follow-tags && npm publish"
   },
   "repository": {
     "type": "git",
@@ -67,6 +68,7 @@
     "dree": "^2.8.3",
     "rimraf": "^3.0.2",
     "source-map-support": "^0.5.20",
+    "standard-version": "^9.5.0",
     "terser": "^5.9.0",
     "tsc-alias": "^1.3.9",
     "type-fest": "^2.3.4",
