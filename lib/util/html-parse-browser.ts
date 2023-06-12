@@ -1,13 +1,14 @@
-/// <reference lib="DOM" />
+// / <reference lib="DOM" />
 
 import type { EPub } from 'lib';
 import { allowedAttributes, allowedXhtml11Tags as _allowedXhtml11Tags } from './constants';
 import type { CB } from './html';
+import xmldom from "xmldom";
 
 const allowedXhtml11Tags = _allowedXhtml11Tags.map(t => t.toUpperCase());
 
 export function fixHTML(this: EPub, index: number, html: string, imgCB: CB) {
-  const document = new DOMParser().parseFromString(html, 'text/html');
+  const document = new xmldom.DOMParser().parseFromString(html, 'text/html');
 
   // reverse to make sure we transform innermost first
   Array.from(document.body.querySelectorAll('*')).reverse().forEach(element => {
