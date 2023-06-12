@@ -1,6 +1,6 @@
 {
   "name": "@paladin-analytics/epub-gen-browser",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "A library to generate EPUB from HTML",
   "main": "dist/lib/index.js",
   "unpkg": "dist/bundle.min.js",
