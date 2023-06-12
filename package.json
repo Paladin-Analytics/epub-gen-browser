@@ -6,8 +6,7 @@
   "unpkg": "dist/bundle.min.js",
   "types": "dist/lib/index.d.ts",
   "browser": {
-    "./dist/lib/util/fetchable.js": "./dist/lib/util/fetchable-browser.js",
-    "./dist/lib/util/html-parse.js": "./dist/lib/util/html-parse-browser.js"
+    "./dist/lib/util/fetchable.js": "./dist/lib/util/fetchable-browser.js"
   },
   "files": [
     "dist/",
