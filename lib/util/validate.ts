@@ -43,6 +43,10 @@ export type Options = {
   batchSize?: number,
   ignoreFailedDownloads?: boolean,
   verbose?: boolean | LogFn,
+  isTOC?: boolean,
+  themeId?: string,
+  toc?: TOCSummaryItem,
+  startPage?: string,
 };
 
 const name = ow.optional.any(ow.string, ow.array.ofType(ow.string), ow.undefined);
@@ -110,3 +114,19 @@ export type NormChapter = NonNullableObject<
     id: string,
     author: string[],
   }>>;
+
+  export interface TOCSummaryItem {
+    itemId: string;
+    title: string;
+    chapterNumber: string;
+    subtitle?: string;
+    subheads?: Array<any>;
+    chapterType?: string;
+    depth: number;
+    parentItemId?: string;
+    /**
+     * Hierarchial link to the children list
+     */
+    children?: TOCSummaryItem[];
+    pointToChapterId?: string;
+  }
