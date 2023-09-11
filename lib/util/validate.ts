@@ -45,7 +45,7 @@ export type Options = {
   verbose?: boolean | LogFn,
   isTOC?: boolean,
   themeId?: string,
-  toc?: TOCSummaryItem,
+  toc?: TOCSummaryItem[],
   startPage?: string,
 };
 
