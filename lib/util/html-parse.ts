@@ -9,6 +9,7 @@ import type { CB } from './html';
 
 const allNodes = compile('*');
 const allImages = compile('img');
+const allDivsWithBackground = compile('div[style*="background-image"]');
 
 export function fixHTML(this: EPub, index: number, html: string, imgCB: CB) {
   const doc = parseDocument(html);
@@ -28,6 +29,24 @@ export function fixHTML(this: EPub, index: number, html: string, imgCB: CB) {
       this.warn(`Warning (content[${index}]): tag ${element.tagName} isn't allowed in EPUB 2/XHTML 1.1 DTD.`);
       element.tagName = 'div'; // yay for object-based trees
     }
+
+    if (element.tagName === "div" && allDivsWithBackground(element)) {
+      // Handle divs with background images
+      // Extract the background image URL from the style attribute
+      const backgroundImageStyle = element.attribs.style || "";
+      const imageUrlMatch = backgroundImageStyle.match(
+        /background-image:\s*url\(['"]?([^'")]+)['"]?\)/
+      );
+
+      if (imageUrlMatch) {
+        const imageUrl = imageUrlMatch[1];
+        const newBackgroundImageStyle = backgroundImageStyle.replace(
+          imageUrl,
+          imgCB.call(this, imageUrl)
+        );
+        element.attribs.style = newBackgroundImageStyle;
+      }
+    }
   });
 
   // record images and change where they point
@@ -37,6 +56,5 @@ export function fixHTML(this: EPub, index: number, html: string, imgCB: CB) {
     if (!element.attribs.src) removeElement(element);
     else element.attribs.src = imgCB.call(this, element.attribs.src);
   });
-
   return render(document, { xmlMode: true });
 }

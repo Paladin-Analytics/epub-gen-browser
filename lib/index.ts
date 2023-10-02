@@ -2,7 +2,7 @@ import { render as renderTemplate } from 'ejs';
 import jszip, { JSZipGeneratorOptions } from 'jszip';
 import { getExtension, getType } from 'mime';
 import ow from 'ow';
-import { Chapter, chapterDefaults, Content, Font, Image, NormChapter, NormOptions, Options, optionsDefaults, optionsPredicate, retryFetch, type, uuid, validateAndNormalizeChapters, validateAndNormalizeOptions } from './util';
+import { Chapter, chapterDefaults, Content, Font, Image, isBase64ImageURL, NormChapter, NormOptions, Options, optionsDefaults, optionsPredicate, retryFetch, type, uuid, validateAndNormalizeChapters, validateAndNormalizeOptions } from './util';
 
 
 export { Options, Content, Chapter, Font, optionsDefaults, chapterDefaults };
@@ -138,6 +138,11 @@ export class EPub {
     for (let i = 0; i < this.images.length; i += this.options.batchSize) {
       const imageContents = await Promise.all(
         this.images.slice(i, i + this.options.batchSize).map(image => {
+          if(isBase64ImageURL(image.url)){
+            const base64result = image.url.split(',')[1];
+            return { ...image, data: base64result }
+          }
+
           const d = retryFetch(image.url, this.options.fetchTimeout, this.options.retryTimes, this.log)
             .then(res => (this.log(`Downloaded image ${image.url}`), { ...image, data: res }));
           return this.options.ignoreFailedDownloads
@@ -145,7 +150,9 @@ export class EPub {
             : d;
         })
       );
-      imageContents.forEach(image => images.file(`${image.id}.${image.extension}`, image.data));
+      imageContents.forEach(image => {
+        images.file(`${image.id}.${image.extension}`, image.data, {base64: isBase64ImageURL(image.url)});
+      });
     }
   }
 
