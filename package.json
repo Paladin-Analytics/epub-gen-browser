@@ -1,5 +1,5 @@
 {
-  "name": "@paladin-analytics/epub-gen-browser",
+  "name": "@surge-global-engineering/epub-gen-browser",
   "version": "1.0.17",
   "description": "A library to generate EPUB from HTML",
   "main": "dist/lib/index.js",
